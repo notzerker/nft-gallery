@@ -1,22 +1,29 @@
 import React, { useState } from "react";
 import { IoIosArrowRoundForward } from "react-icons/io";
-import { useMoralisWeb3Api } from "react-moralis";
 import { motion } from "framer-motion";
+import Gallery from "./Gallery";
+import Item from "./Item";
+import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 
 const Main = () => {
-  const Web3Api = useMoralisWeb3Api();
-  const [address, setAddress] = useState("");
+  const apiKey = "SnGAV1KNt2faUFkP0C1d-TjoBcQB1HiU";
+  const [address, setAddress] = useState(
+    "0xFf992E92099035ce63f459a5967e4a8c0D95dd71"
+  );
+  const [result, setResult] = useState([]);
 
-  async function test() {
-    console.log("test");
-  }
+  const web3 = createAlchemyWeb3(
+    `https://eth-mainnet.alchemyapi.io/v2/${apiKey}`
+  );
 
   async function getNFTs({ address }) {
-    const userEthNFTs = await Web3Api.account.getNFTs({
-      address: address,
+    const nfts = await web3.alchemy.getNfts({
+      owner: address,
     });
-    console.log(userEthNFTs);
+    setResult(nfts.ownedNfts);
   }
+
+  // console.log(result);
 
   return (
     <div>
@@ -52,6 +59,7 @@ const Main = () => {
           </motion.div>
         </div>
       </div>
+      <Gallery result={result} address={address} />
       <div className="fixed top-0 blur-3xl">
         <img src="./assets/soju.jpeg" className="opacity-20" />
       </div>

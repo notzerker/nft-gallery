@@ -17,7 +17,6 @@ export default function Home() {
         <title>Gallery</title>
       </Head>
       <Main />
-      <Gallery />
     </>
   );
 }
