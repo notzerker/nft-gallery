@@ -6,14 +6,26 @@ const Item = ({ name, tokenId, img }) => {
   return (
     <div>
       <motion.div
-        className="flex h-fit w-72 cursor-pointer select-none flex-col space-y-4 overflow-hidden rounded-xl bg-dark p-8 shadow-xl hover:scale-105"
+        className="flex h-fit w-full cursor-pointer select-none flex-col space-y-4 overflow-hidden rounded-md border border-white p-8 shadow-xl hover:scale-105"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 1 }}
       >
-        <img src={img} className="h-56 w-56 rounded-lg object-cover" />
+        <img
+          // onLoad={({ currentTarget }) => {
+          //   currentTarget.src = null;
+          // }}
+          src={img}
+          onError={({ currentTarget }) => {
+            currentTarget.oneError = null;
+            currentTarget.src = "./assets/soju.jpeg";
+          }}
+          className="h-full rounded-lg object-cover"
+        />
         <div>
-          <p className="w-full truncate text-lg font-extrabold">{name}</p>
-          <p className="w-full truncate text-sm text-light">{tokenId}</p>
+          <p className="w-full truncate text-lg font-extrabold text-white">
+            {name}
+          </p>
+          <p className="w-full truncate text-sm text-white">{tokenId}</p>
         </div>
       </motion.div>
     </div>
