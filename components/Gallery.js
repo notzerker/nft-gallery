@@ -18,7 +18,6 @@ const Gallery = () => {
 
   const router = useRouter();
   const { address } = router.query;
-  console.log(address);
 
   const web3 = createAlchemyWeb3(
     `https://eth-mainnet.alchemyapi.io/v2/${apiKey}`
@@ -36,6 +35,8 @@ const Gallery = () => {
     }
   }, [address]);
 
+  console.log(result);
+
   result.map((data) => {
     if (!collections.includes(data.contract.address)) {
       collections.push(data.contract.address);
@@ -45,16 +46,16 @@ const Gallery = () => {
 
   return (
     <>
-      <div className="z-50 flex min-h-screen w-full flex-col items-center justify-center space-y-24 py-24">
-        <div className="z-50 flex flex-row items-center justify-center space-x-16">
-          <div className="relative flex flex-col items-center justify-center space-y-4 rounded-xl bg-white p-16 shadow-xl">
+      <div className="flex min-h-screen w-full flex-col items-center justify-center space-y-24 py-24">
+        <div className=" flex flex-row items-center justify-center space-x-16">
+          <div className="relative flex flex-col items-center justify-center space-y-4 rounded-xl bg-dark p-16 shadow-xl">
             <div className="absolute top-4 left-4 p-2">
-              <CgProfile className="text-xl text-gray hover:text-white" />
+              <CgProfile className="cursor-pointer text-xl text-gray hover:text-white" />
             </div>
             <div className="absolute top-0 right-4 rounded-xl p-2">
               <BsThreeDots className="cursor-pointer text-gray hover:text-white" />
             </div>
-            <h1 className="w-80 truncate text-center text-6xl font-extrabold text-black">
+            <h1 className="w-80 truncate text-center text-6xl font-extrabold text-white">
               {address}
             </h1>
             <div className="flex cursor-pointer flex-row items-center justify-center space-x-2 text-center text-gray hover:text-white">
@@ -62,7 +63,7 @@ const Gallery = () => {
               <p className="w-24 truncate">{address}</p>
             </div>
           </div>
-          <div className="before:broder-white relative z-50 flex h-full flex-row space-x-12 p-8 pr-16 before:absolute before:bottom-0 before:right-0 before:h-4 before:w-4 before:border-b-[1px] before:border-r-[1px] after:absolute after:top-0 after:right-0 after:h-4 after:w-4 after:border-t-[1px] after:border-r-[1px]">
+          <div className="before:broder-white relative  flex h-full flex-row space-x-12 p-8 pr-16 before:absolute before:bottom-0 before:right-0 before:h-4 before:w-4 before:border-b-[1px] before:border-r-[1px] after:absolute after:top-0 after:right-0 after:h-4 after:w-4 after:border-t-[1px] after:border-r-[1px]">
             <div className="flex flex-col space-y-2">
               <p className="text-sm uppercase tracking-widest text-gray">
                 Items
@@ -79,7 +80,7 @@ const Gallery = () => {
             </div>
           </div>
         </div>
-        <div className="z-50 grid w-full grid-cols-4 gap-8 px-28">
+        <div className=" grid w-full grid-cols-4 gap-8 px-28">
           {result.map((data) => {
             var img = "";
             var valid = true;
@@ -94,7 +95,13 @@ const Gallery = () => {
             }
 
             return valid ? (
-              <Item name={data.title} tokenId={data.token_id} img={img} />
+              <Item
+                name={data.title}
+                tokenId={data.token_id}
+                img={img}
+                desc={data.description}
+                attr={data.metadata.attributes}
+              />
             ) : (
               ""
             );

@@ -10,13 +10,14 @@ const Main = () => {
 
   const router = useRouter();
 
-  const formHandler = () => {
+  const formHandler = (e) => {
+    e.preventDefault();
     router.push("/" + address);
   };
 
   return (
     <>
-      <div className="relative z-50 h-screen w-full overflow-hidden overscroll-y-none">
+      <div className="relative h-screen w-full overflow-hidden overscroll-y-none">
         <div className="flex h-full flex-col items-center justify-center">
           <p className="text-lg uppercase tracking-widest text-white">
             Welcome To
@@ -32,7 +33,7 @@ const Main = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 1 }}
           >
-            <form onSubmit={() => formHandler()} className="w-full">
+            <form onSubmit={(e) => formHandler(e)} className="w-full">
               <input
                 className="border-1 mt-6 w-full rounded-xl border-white bg-dark py-4 pr-16 pl-6 placeholder-light shadow-xl hover:placeholder-white focus:outline-none"
                 placeholder="Address or ENS"
@@ -42,7 +43,7 @@ const Main = () => {
             </form>
             <div
               className="absolute right-4 top-4 cursor-pointer py-4 text-4xl text-light hover:text-white"
-              onClick={() => formHandler()}
+              onClick={(e) => formHandler(e)}
             >
               <IoIosArrowRoundForward />
             </div>
