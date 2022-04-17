@@ -36,7 +36,7 @@ const Main = () => {
             <form onSubmit={(e) => formHandler(e)} className="w-full">
               <input
                 className="border-1 mt-6 w-full rounded-xl border-white bg-dark py-4 pr-16 pl-6 placeholder-light shadow-xl hover:placeholder-white focus:outline-none"
-                placeholder="Address or ENS"
+                placeholder="Address"
                 onChange={(e) => setAddress(e.target.value)}
                 spellCheck={false}
               />

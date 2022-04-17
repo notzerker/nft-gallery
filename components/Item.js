@@ -1,10 +1,14 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { IoOpenOutline } from "react-icons/io5";
+import { hexToNumberString } from "web3-utils";
 
 const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd }) => {
+  const [imageLoading, setImageLoading] = useState(true);
+  const [dialogImageLoading, setDialogImageLoading] = useState(true);
+
   const truncateAddress = (addr) => {
     const addressLength = addr.length;
     const truncateAddr =
@@ -18,7 +22,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd }) => {
 
   const variants = {
     visible: { scale: 1, x: "-50%", y: "-50%" },
-    hidden: { scale: 0.9, x: "-50%", y: "-50%" },
+    hidden: { scale: 0.7, x: "-50%", y: "-50%" },
   };
 
   return (
@@ -29,10 +33,11 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd }) => {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 1 }}
         >
-          <img
-            // onLoad={({ currentTarget }) => {
-            //   currentTarget.src = null;
-            // }}
+          <motion.img
+            initial={{ opacity: 0 }}
+            animate={{ opacity: imageLoading ? 0 : 1 }}
+            transition={{ opacity: { duration: 0.4 } }}
+            onLoad={() => setImageLoading(false)}
             src={img}
             onError={({ currentTarget }) => {
               currentTarget.oneError = null;
@@ -41,7 +46,9 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd }) => {
             className="rounded-y-xl aspect-square w-full"
           />
           <div className="w-full p-4">
-            <p className="w-full truncate text-left text-white">{name}</p>
+            <p className="w-full truncate text-left text-sm font-semibold text-white">
+              {name}
+            </p>
           </div>
         </motion.div>
       </DialogPrimitive.Trigger>
@@ -55,7 +62,11 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd }) => {
             variants={variants}
           >
             <div className="col-span-6 aspect-square">
-              <img
+              <motion.img
+                initial={{ opacity: 0 }}
+                animate={{ opacity: dialogImageLoading ? 0 : 1 }}
+                transition={{ opacity: { duration: 0 } }}
+                onLoad={() => setDialogImageLoading(false)}
                 src={img}
                 className="m-8 aspect-square w-full rounded-xl"
                 onError={({ currentTarget }) => {
@@ -66,30 +77,71 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd }) => {
             </div>
             <div className="col-span-6 h-full max-h-[37rem] overflow-scroll py-12 px-8">
               <div className="flex h-fit flex-col items-start justify-center overflow-y-scroll">
-                <h1 className="mb-4 inline w-full text-left text-4xl font-extrabold tracking-tighter text-white ">
+                <h1 className="mb-6 inline w-full text-left text-4xl font-extrabold tracking-tighter text-white ">
                   {name}
                 </h1>
-                <div className=" mb-4 flex w-full space-x-4">
-                  <div>
+                <div className=" mb-6 flex w-full">
+                  <motion.a
+                    href={
+                      "https://opensea.io/assets/" +
+                      contract +
+                      "/" +
+                      hexToNumberString(tokenId)
+                    }
+                    target="_blank"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 1 }}
+                    className="px-2"
+                  >
                     <Image
                       src="/assets/opensea.svg"
-                      height={40}
-                      width={40}
+                      height={30}
+                      width={30}
                       className="cursor-pointer shadow-xl"
                     />
-                  </div>
-                  <div>
+                  </motion.a>
+                  <motion.a
+                    href={
+                      "https://looksrare.org/collections/" +
+                      contract +
+                      "/" +
+                      hexToNumberString(tokenId)
+                    }
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 1 }}
+                    target="_blank"
+                    className="px-2"
+                  >
                     <Image
                       src="/assets/looksrare1.svg"
-                      height={40}
-                      width={40}
+                      height={30}
+                      width={30}
                       className="cursor-pointer shadow-xl"
                     />
-                  </div>
+                  </motion.a>
+                  {/* <motion.a
+                    href={
+                      "https://www.gem.xyz/asset/" +
+                      contract +
+                      "/" +
+                      hexToNumberString(tokenId)
+                    }
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 1 }}
+                    target="_blank"
+                    className=" flex items-center justify-center px-2"
+                  >
+                    <Image
+                      src="/assets/gem.png"
+                      height={30}
+                      width={30}
+                      className="cursor-pointer shadow-xl"
+                    />
+                  </motion.a> */}
                 </div>
                 <div className="grid w-full grid-cols-3 gap-x-4">
                   <div>
-                    <p className="mb-2 text-sm uppercase tracking-widest text-gray">
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-gray">
                       Creator
                     </p>
                     <a
@@ -102,17 +154,15 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd }) => {
                     </a>
                   </div>
                   <div>
-                    <p className="mb-2 text-sm uppercase tracking-widest text-gray">
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-gray">
                       Token ID
                     </p>
                     <p className="mb-10 flex w-32 items-center overflow-hidden text-light ">
-                      {parseInt(tokenId, 16).toLocaleString("fullwide", {
-                        useGrouping: false,
-                      })}
+                      {hexToNumberString(tokenId)}
                     </p>
                   </div>
                   <div>
-                    <p className="mb-2 text-sm uppercase tracking-widest text-gray">
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-gray">
                       Token Standard
                     </p>
                     <p className="mb-10 flex w-full items-center text-light ">
@@ -122,17 +172,17 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd }) => {
                 </div>
                 {desc ? (
                   <>
-                    <p className="mb-2 text-sm uppercase tracking-widest text-gray">
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-gray">
                       Description
                     </p>
-                    <p className="mb-10 w-full text-light">{desc}</p>
+                    <p className="mb-10 w-full text-sm text-light">{desc}</p>
                   </>
                 ) : (
                   ""
                 )}
                 {typeof attr !== "undefined" ? (
                   <>
-                    <p className="mb-2 text-sm uppercase tracking-widest text-gray">
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-gray">
                       Attributes
                     </p>
                     <div className="grid w-full grid-cols-2 gap-3">
@@ -142,7 +192,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd }) => {
                             <p className="text-xs uppercase tracking-wider text-light">
                               {x.trait_type}
                             </p>
-                            <p className="w-full truncate text-sm font-extrabold">
+                            <p className="w-full truncate text-sm font-semibold">
                               {x.value}
                             </p>
                           </div>
