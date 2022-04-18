@@ -21,10 +21,8 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
     return truncateAddr;
   };
 
-  const fixY = "-50%";
-
   const variants = {
-    visible: { scale: 1, opacity: 1, x: "-50%", y: "-50%", z: "0px" },
+    visible: { scale: 1, opacity: 1, x: "-50%", y: "-50.1%", z: "0px" },
     hidden: { scale: 1, opacity: 0, x: "-50%", y: "-30%", z: "0px" },
     transition: { duration: 2 },
   };
