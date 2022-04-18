@@ -146,7 +146,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
         <DialogPrimitive.Overlay className="fixed inset-0 bg-dark/80" />
         <DialogPrimitive.Content className={`${dark && "dark"}`}>
           <motion.div
-            className="fixed left-1/2 top-1/2 grid w-11/12 max-w-[72rem] grid-cols-1 gap-x-10 overflow-y-scroll rounded-xl border border-light/20 bg-white drop-shadow-md scrollbar-hide dark:bg-dark md:max-h-[555px] md:grid-cols-12	"
+            className="translate3d(-1/2, -1/2, 0px) fixed left-1/2 top-1/2 grid w-11/12 max-w-[72rem] grid-cols-1 gap-x-10 overflow-y-scroll rounded-xl border border-light/20 bg-white drop-shadow-md scrollbar-hide dark:bg-dark md:max-h-[555px] md:grid-cols-12	"
             initial="hidden"
             animate="visible"
             variants={variants}
