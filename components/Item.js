@@ -21,7 +21,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
     return truncateAddr;
   };
 
-  const fixY = "50% - 0.5px";
+  const fixY = "-50% - 0.5px";
 
   const variants = {
     visible: { scale: 1, x: "-50%", y: fixY },
@@ -167,11 +167,11 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
             </div>
             <div className="col-span-6 max-h-36 px-8 pt-8 md:max-h-min md:pt-12">
               <div className="flex h-fit flex-col items-start justify-center">
-                <div className="mb-6 flex w-full flex-row items-center justify-center">
-                  <h1 className=" inline w-full text-left text-3xl font-extrabold tracking-tighter text-black dark:text-white ">
+                <div className="mb-6 flex h-fit w-full flex-row items-center justify-center">
+                  <h1 className=" inline h-full w-full text-left text-3xl font-extrabold tracking-tighter text-black dark:text-white">
                     {name}
                   </h1>
-                  <div className="flex">
+                  <div className="flex h-full w-full items-center justify-end">
                     <motion.a
                       href={
                         "https://opensea.io/assets/" +
