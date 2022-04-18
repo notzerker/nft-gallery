@@ -106,22 +106,25 @@ const Gallery = () => {
           <IoIosArrowRoundBack />
         </motion.a>
       </Link>
-      {/* <motion.a
-        className="absolute top-16 right-16 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-dark p-4 text-light drop-shadow-md hover:text-white"
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 1 }}
-      >
-        <FaEthereum />
-        <p> {balance.toString().substring(0, 4)}</p>
-      </motion.a> */}
-      <motion.a
-        className="absolute top-16 right-16 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 1 }}
-        onClick={setDark}
-      >
-        {dark ? <FiSun /> : <FiMoon />}
-      </motion.a>
+      <div className="absolute top-16 right-16 flex flex-row space-x-4">
+        <motion.a
+          className="flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 1 }}
+        >
+          <FaEthereum />
+          <p> {balance.toString().substring(0, 4)}</p>
+        </motion.a>
+        <motion.a
+          className=" flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 1 }}
+          onClick={setDark}
+        >
+          {dark ? <FiSun /> : <FiMoon />}
+        </motion.a>
+      </div>
+
       <div className=" mb-24 flex flex-row items-center justify-center md:space-x-24">
         <div className="relative flex flex-col items-center justify-center space-y-4 rounded-xl bg-white p-16 drop-shadow-md dark:bg-dark">
           <div className="absolute top-4 left-4 p-2">
@@ -130,7 +133,7 @@ const Gallery = () => {
           <div className="absolute top-0 right-4 rounded-xl p-2">
             <BsThreeDots className="cursor-pointer text-gray hover:text-black dark:hover:text-white" />
           </div>
-          <h1 className="w-[20rem] text-center text-6xl font-extrabold text-black dark:text-white">
+          <h1 className="flex w-[20rem] items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
             {truncateAddr}
           </h1>
           <a
