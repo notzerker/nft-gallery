@@ -212,7 +212,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
                     </motion.a>
                   </div>
                 </div>
-                <div className="relative mb-6 grid w-full grid-cols-3 gap-x-1">
+                <div className="relative mb-6 grid w-full grid-cols-3 gap-x-2">
                   <div
                     className={`${
                       info == "metadata" ? "bg-dark dark:bg-white" : "bg-gray"

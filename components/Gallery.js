@@ -94,7 +94,7 @@ const Gallery = () => {
   return (
     <div
       className={`${
-        dark ? "dark bg-[#141416]" : "bg-[#f1f1f1f1]"
+        dark ? "dark bg-[#232323]" : "bg-[#F1F1F1]"
       } relative flex min-h-screen w-full flex-col items-center justify-start py-40`}
     >
       <Link href="/">

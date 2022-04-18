@@ -23,7 +23,7 @@ const Main = () => {
   return (
     <div
       className={`${
-        dark ? "dark bg-[#141416]" : "bg-[#f1f1f1f1]"
+        dark ? "dark bg-[#232323]" : "bg-[#f1f1f1f1]"
       } relative h-screen w-full overflow-hidden overscroll-y-none`}
     >
       <motion.a
