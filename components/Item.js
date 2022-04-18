@@ -21,11 +21,11 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
     return truncateAddr;
   };
 
-  const fixY = "-50% - 0.5px";
+  const fixY = "-50%";
 
   const variants = {
-    visible: { scale: 1, x: "-50%", y: fixY },
-    hidden: { scale: 0.7, x: "-50%", y: "-50%" },
+    visible: { scale: 1, x: "-50%", y: "-50%", z: "0px" },
+    hidden: { scale: 1, x: "-50%", y: "-30%", z: "0px" },
   };
 
   const infoHanlder = () => {
