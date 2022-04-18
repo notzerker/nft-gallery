@@ -146,7 +146,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
         <DialogPrimitive.Overlay className="fixed inset-0 bg-dark/80" />
         <DialogPrimitive.Content className={`${dark && "dark"}`}>
           <motion.div
-            className="fixed left-1/2 top-1/2 grid w-11/12 max-w-[72rem] grid-cols-1 gap-x-10 overflow-y-scroll rounded-xl border border-light/20 bg-white drop-shadow-md dark:bg-dark md:max-h-[555px] md:grid-cols-12	"
+            className="fixed left-1/2 top-1/2 grid w-11/12 max-w-[72rem] grid-cols-1 gap-x-10 overflow-y-scroll rounded-xl border border-light/20 bg-white drop-shadow-md scrollbar-hide dark:bg-dark md:max-h-[555px] md:grid-cols-12	"
             initial="hidden"
             animate="visible"
             variants={variants}
@@ -165,8 +165,8 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
                 }}
               />
             </div>
-            <div className="col-span-6 max-h-36 px-8 pt-8 md:max-h-min md:overflow-y-scroll md:pt-12">
-              <div className="flex h-fit flex-col items-start justify-center overflow-y-scroll">
+            <div className="col-span-6 max-h-36 px-8 pt-8 md:max-h-min md:pt-12">
+              <div className="flex h-fit flex-col items-start justify-center">
                 <div className="mb-6 flex w-full flex-row items-center justify-center">
                   <h1 className=" inline w-full text-left text-3xl font-extrabold tracking-tighter text-black dark:text-white ">
                     {name}
