@@ -24,8 +24,9 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
   const fixY = "-50%";
 
   const variants = {
-    visible: { scale: 1, x: "-50%", y: "-50%", z: "0px" },
-    hidden: { scale: 1, x: "-50%", y: "-30%", z: "0px" },
+    visible: { scale: 1, opacity: 1, x: "-50%", y: "-50%", z: "0px" },
+    hidden: { scale: 1, opacity: 0, x: "-50%", y: "-30%", z: "0px" },
+    transition: { duration: 2 },
   };
 
   const infoHanlder = () => {
@@ -146,7 +147,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
         <DialogPrimitive.Overlay className="fixed inset-0 bg-dark/80" />
         <DialogPrimitive.Content className={`${dark && "dark"}`}>
           <motion.div
-            className="translate3d(-1/2, -1/2, 0px) fixed left-1/2 top-1/2 grid w-11/12 max-w-[72rem] grid-cols-1 gap-x-10 overflow-y-scroll rounded-xl border border-light/20 bg-white drop-shadow-md scrollbar-hide dark:bg-dark md:max-h-[555px] md:grid-cols-12	"
+            className="fixed left-1/2 top-1/2 grid w-11/12 max-w-[72rem] grid-cols-1 gap-x-10 overflow-y-scroll rounded-xl border border-light/20 bg-white subpixel-antialiased drop-shadow-md scrollbar-hide dark:bg-dark md:max-h-[555px] md:grid-cols-12	"
             initial="hidden"
             animate="visible"
             variants={variants}
