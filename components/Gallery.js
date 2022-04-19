@@ -8,7 +8,7 @@ import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import { addRequestMeta } from "next/dist/server/request-meta";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Link from "next/link";
-import { IoOpenOutline } from "react-icons/io5";
+import { FiArrowUpRight } from "react-icons/fi";
 import { hexToNumberString } from "web3-utils";
 import { FiMoon, FiSun } from "react-icons/fi";
 import useStore from "../lib/store";
@@ -94,8 +94,10 @@ const Gallery = () => {
   return (
     <div
       className={`${
-        dark ? "dark bg-[#232323]" : "bg-[#F1F1F1]"
-      } relative flex min-h-screen w-full flex-col items-center justify-start py-40`}
+        dark
+          ? "dark from-[#000000] to-[#232323]"
+          : "from-[#ffffff] to-[#f1f1f1f1]"
+      } relative flex min-h-screen w-full flex-col items-center justify-start bg-gradient-to-b py-40`}
     >
       <Link href="/">
         <motion.a
@@ -111,6 +113,8 @@ const Gallery = () => {
           className="flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 1 }}
+          href={"https://etherscan.io/address/" + addr}
+          target="_blank"
         >
           <FaEthereum />
           <p> {balance.toString().substring(0, 4)}</p>
@@ -137,12 +141,12 @@ const Gallery = () => {
             {truncateAddr}
           </h1>
           <a
-            className="flex cursor-pointer flex-row items-center justify-center space-x-2 text-center text-gray hover:text-black dark:hover:text-white"
+            className="flex cursor-pointer flex-row items-start justify-start space-x-1 text-center text-gray hover:text-black dark:hover:text-white"
             href={"https://etherscan.io/address/" + addr}
             target="_blank"
           >
             <p className="">{truncateAddr}</p>
-            <IoOpenOutline />
+            <FiArrowUpRight />
           </a>
         </div>
         <div className="relative hidden h-full flex-row space-x-12 md:flex">

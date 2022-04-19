@@ -23,8 +23,10 @@ const Main = () => {
   return (
     <div
       className={`${
-        dark ? "dark bg-[#232323]" : "bg-[#f1f1f1f1]"
-      } relative h-screen w-full overflow-hidden overscroll-y-none`}
+        dark
+          ? "dark from-[#000000] to-[#232323]"
+          : "from-[#ffffff] to-[#f1f1f1f1]"
+      } relative h-screen w-full overflow-hidden overscroll-y-none bg-gradient-to-b`}
     >
       <motion.a
         className="absolute top-16 right-16 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
@@ -42,7 +44,7 @@ const Main = () => {
           The Gallery.
         </h1>
         <h2 className="text-kg mt-2 text-gray dark:text-light">
-          View your favorite NFT collectibles.
+          Explore other's NFT collections on the Ethereum network.
         </h2>
         <motion.div
           className="relative flex w-80 flex-col items-center justify-center"
@@ -52,7 +54,7 @@ const Main = () => {
           <form onSubmit={(e) => formHandler(e)} className="w-full">
             <input
               className="border-1 mt-6 w-full rounded-xl border-black bg-white py-4 pr-16 pl-6 text-black placeholder-gray drop-shadow-md hover:placeholder-black focus:outline-none dark:border-white dark:bg-dark dark:text-white dark:placeholder-light dark:hover:placeholder-white"
-              placeholder="Address"
+              placeholder="Search by Address"
               onChange={(e) => setAddress(e.target.value)}
               spellCheck={false}
             />
