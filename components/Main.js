@@ -50,7 +50,7 @@ const Main = () => {
       } relative h-screen w-full overflow-hidden overscroll-y-none bg-gradient-to-b`}
     >
       <motion.a
-        className="absolute top-16 right-16 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
+        className="absolute top-16 right-8 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white md:right-16"
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 1 }}
         onClick={() => setDarkHanlder()}

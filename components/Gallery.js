@@ -100,13 +100,17 @@ const Gallery = () => {
     }
   }, []);
 
-  const setDarkHanlder = () => {
+  const setDarkHandler = () => {
     setDark();
     if (dark == false) {
       localStorage.setItem("dark", true);
     } else {
       localStorage.setItem("dark", false);
     }
+  };
+
+  const copyHandler = () => {
+    navigator.clipboard.writeText(address);
   };
 
   return (
@@ -119,14 +123,14 @@ const Gallery = () => {
     >
       <Link href="/">
         <motion.a
-          className="absolute top-16 left-16 cursor-pointer rounded-xl bg-white p-4 text-2xl text-black drop-shadow-md hover:text-black dark:bg-dark dark:text-gray dark:hover:text-white "
+          className="absolute top-8 left-8 cursor-pointer rounded-xl bg-white p-4 text-2xl text-black drop-shadow-md hover:text-black dark:bg-dark dark:text-gray dark:hover:text-white md:top-16 md:left-16 "
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 1 }}
         >
           <IoIosArrowRoundBack />
         </motion.a>
       </Link>
-      <div className="absolute top-16 right-16 flex flex-row space-x-4">
+      <div className="absolute top-8 right-8 flex flex-row space-x-4 md:top-16 md:right-16">
         <motion.a
           className="flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
           whileHover={{ scale: 1.03 }}
@@ -141,7 +145,7 @@ const Gallery = () => {
           className=" flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 1 }}
-          onClick={() => setDarkHanlder()}
+          onClick={() => setDarkHandler()}
         >
           {dark ? <FiSun /> : <FiMoon />}
         </motion.a>
@@ -159,21 +163,42 @@ const Gallery = () => {
             sideOffset={10}
             className={`${dark && "dark"} `}
           >
-            <div className="h-fit w-44 -translate-x-16 rounded-xl bg-white p-2 text-black drop-shadow-md dark:bg-dark dark:text-white">
-              <DropdownMenuPrimitive.Item className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none">
-                <Image src="/assets/opensea.svg" height={20} width={20} />
-                <p>Opensea</p>
+            <div className="h-fit w-44 rounded-xl bg-white p-2 text-black drop-shadow-md dark:bg-dark dark:text-white md:-translate-x-16">
+              <DropdownMenuPrimitive.Item>
+                <a
+                  href={"https://opensea.io/" + addr}
+                  target="_blank"
+                  className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none"
+                >
+                  <Image src="/assets/opensea.svg" height={20} width={20} />
+                  <p>Opensea</p>
+                </a>
               </DropdownMenuPrimitive.Item>
-              <DropdownMenuPrimitive.Item className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none">
-                <Image src="/assets/looksrare.svg" height={20} width={20} />
-                <p>LooksRare</p>
+              <DropdownMenuPrimitive.Item>
+                <a
+                  href={"https://looksrare.org/accounts/" + addr}
+                  target="_blank"
+                  className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none"
+                >
+                  <Image src="/assets/looksrare.svg" height={20} width={20} />
+                  <p>LooksRare</p>
+                </a>
               </DropdownMenuPrimitive.Item>
-              <DropdownMenuPrimitive.Item className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none">
-                <Image src="/assets/gem.svg" height={20} width={20} />
-                <p>Gem</p>
+              <DropdownMenuPrimitive.Item>
+                <a
+                  href={"https://www.gem.xyz/profile/" + addr}
+                  target="_blank"
+                  className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none"
+                >
+                  <Image src="/assets/gem.svg" height={20} width={20} />
+                  <p>Gem</p>
+                </a>
               </DropdownMenuPrimitive.Item>
               <DropdownMenuPrimitive.Separator className="my-1 h-[1px] w-full rounded-xl bg-gray" />
-              <DropdownMenuPrimitive.Item className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none">
+              <DropdownMenuPrimitive.Item
+                className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none"
+                onClick={() => copyHandler()}
+              >
                 <FiCopy />
                 <p>Copy address</p>
               </DropdownMenuPrimitive.Item>
