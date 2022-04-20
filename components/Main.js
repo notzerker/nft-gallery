@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
@@ -12,6 +12,27 @@ const Main = () => {
   const [address, setAddress] = useState("");
   const dark = useStore((state) => state.dark);
   const setDark = useStore((state) => state.setDark);
+
+  if (typeof localStorage !== "undefined") {
+    if (localStorage.getItem("dark") == null) {
+      localStorage.setItem("dark", dark);
+    }
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("dark") == "true") {
+      setDark();
+    }
+  }, []);
+
+  const setDarkHanlder = () => {
+    setDark();
+    if (dark == false) {
+      localStorage.setItem("dark", true);
+    } else {
+      localStorage.setItem("dark", false);
+    }
+  };
 
   const router = useRouter();
 
@@ -32,7 +53,7 @@ const Main = () => {
         className="absolute top-16 right-16 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 1 }}
-        onClick={setDark}
+        onClick={() => setDarkHanlder()}
       >
         {dark ? <FiSun /> : <FiMoon />}
       </motion.a>

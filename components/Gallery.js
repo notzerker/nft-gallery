@@ -10,10 +10,12 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import Link from "next/link";
 import { FiArrowUpRight } from "react-icons/fi";
 import { hexToNumberString } from "web3-utils";
-import { FiMoon, FiSun } from "react-icons/fi";
+import { FiMoon, FiSun, FiCopy } from "react-icons/fi";
 import useStore from "../lib/store";
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 
 import Item from "./Item";
+import Image from "next/image";
 
 const Gallery = () => {
   const [url, setUrl] = useState();
@@ -69,7 +71,6 @@ const Gallery = () => {
           .then((res) => {
             const ethBalance = res / 10 ** 18;
             setBalance(ethBalance);
-            console.log(balance);
           })
           .catch((error) => {
             alert(error);
@@ -80,8 +81,6 @@ const Gallery = () => {
     }
   }, [address]);
 
-  console.log(result);
-
   result.map((data) => {
     if (!collections.includes(data.contract.address)) {
       collections.push(data.contract.address);
@@ -89,7 +88,26 @@ const Gallery = () => {
     const name = JSON.stringify(data.name);
   });
 
-  console.log(dark);
+  if (typeof localStorage !== "undefined") {
+    if (localStorage.getItem("dark") == null) {
+      localStorage.setItem("dark", dark);
+    }
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("dark") == "true") {
+      setDark();
+    }
+  }, []);
+
+  const setDarkHanlder = () => {
+    setDark();
+    if (dark == false) {
+      localStorage.setItem("dark", true);
+    } else {
+      localStorage.setItem("dark", false);
+    }
+  };
 
   return (
     <div
@@ -117,25 +135,57 @@ const Gallery = () => {
           target="_blank"
         >
           <FaEthereum />
-          <p> {balance.toString().substring(0, 4)}</p>
+          <p> {(Math.round(balance.toString() * 100) / 100).toFixed(2)}</p>
         </motion.a>
         <motion.a
           className=" flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 1 }}
-          onClick={setDark}
+          onClick={() => setDarkHanlder()}
         >
           {dark ? <FiSun /> : <FiMoon />}
         </motion.a>
+        <DropdownMenuPrimitive.Root>
+          <DropdownMenuPrimitive.Trigger className="focus:outline-none">
+            <motion.div
+              className="flex h-full cursor-pointer flex-row items-center justify-center rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 1 }}
+            >
+              <BsThreeDots className="cursor-pointer text-gray hover:text-black dark:hover:text-white" />
+            </motion.div>
+          </DropdownMenuPrimitive.Trigger>
+          <DropdownMenuPrimitive.Content
+            sideOffset={10}
+            className={`${dark && "dark"} `}
+          >
+            <div className="h-fit w-44 -translate-x-16 rounded-xl bg-white p-2 text-black drop-shadow-md dark:bg-dark dark:text-white">
+              <DropdownMenuPrimitive.Item className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none">
+                <Image src="/assets/opensea.svg" height={20} width={20} />
+                <p>Opensea</p>
+              </DropdownMenuPrimitive.Item>
+              <DropdownMenuPrimitive.Item className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none">
+                <Image src="/assets/looksrare.svg" height={20} width={20} />
+                <p>LooksRare</p>
+              </DropdownMenuPrimitive.Item>
+              <DropdownMenuPrimitive.Item className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none">
+                <Image src="/assets/gem.svg" height={20} width={20} />
+                <p>Gem</p>
+              </DropdownMenuPrimitive.Item>
+              <DropdownMenuPrimitive.Separator className="my-1 h-[1px] w-full rounded-xl bg-gray" />
+              <DropdownMenuPrimitive.Item className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none">
+                <FiCopy />
+                <p>Copy address</p>
+              </DropdownMenuPrimitive.Item>
+            </div>
+          </DropdownMenuPrimitive.Content>
+        </DropdownMenuPrimitive.Root>
       </div>
 
       <div className=" mb-24 flex flex-row items-center justify-center md:space-x-24">
         <div className="relative flex flex-col items-center justify-center space-y-4 rounded-xl bg-white p-16 drop-shadow-md dark:bg-dark">
           <div className="absolute top-4 left-4 p-2">
             <CgProfile className="cursor-pointer text-xl text-gray hover:text-black dark:hover:text-white" />
-          </div>
-          <div className="absolute top-0 right-4 rounded-xl p-2">
-            <BsThreeDots className="cursor-pointer text-gray hover:text-black dark:hover:text-white" />
           </div>
           <h1 className="flex w-[20rem] items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
             {truncateAddr}

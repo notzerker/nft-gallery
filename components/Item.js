@@ -23,9 +23,18 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
   };
 
   const variants = {
-    visible: { scale: 1, opacity: 1, x: "-50%", y: "-50.1%", z: "0px" },
     hidden: { scale: 1, opacity: 0, x: "-50%", y: "-30%", z: "0px" },
+    visible: { scale: 1, opacity: 1, x: "-50%", y: "-50.1%", z: "0px" },
     transition: { duration: 2 },
+  };
+
+  const attrVariants = {
+    visible: { transition: { staggerChildren: 0.3 } },
+  };
+
+  const attrItems = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
   };
 
   const infoHanlder = () => {
@@ -64,53 +73,47 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
         </div>
       );
     } else if (info == "description") {
-      return desc ? (
-        <>
-          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
-            Description
-          </p>
-          <p className="mb-10 w-full text-gray dark:text-light">{desc}</p>
-        </>
-      ) : (
-        <>
-          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
-            Description
-          </p>
-          <p className="mb-10 text-gray dark:text-light">
-            This token has no description.{" "}
-          </p>
-        </>
+      return (
+        desc && (
+          <>
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
+              Description
+            </p>
+            <p className="mb-10 w-full text-gray dark:text-light">{desc}</p>
+          </>
+        )
       );
     } else {
-      return typeof attr !== "undefined" ? (
-        <>
-          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
-            Attributes
-          </p>
-          <div className="mb-12 grid w-full grid-cols-2 gap-2">
-            {attr.map((x) => {
-              return (
-                <div className="flex h-16 w-full flex-col items-start justify-center rounded-xl border-[1px] border-gray/50 px-4 dark:border-light/50">
-                  <p className="text-xs uppercase tracking-wider text-gray dark:text-light">
-                    {x.trait_type}
-                  </p>
-                  <p className="w-full truncate text-sm font-medium text-black dark:text-white">
-                    {x.value}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </>
-      ) : (
-        <>
-          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
-            Attributes
-          </p>
-          <p className=" text-gray dark:text-light">
-            This token has no attributes.{" "}
-          </p>
-        </>
+      return (
+        typeof attr !== "undefined" && (
+          <>
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
+              Attributes
+            </p>
+            <motion.div
+              className="mb-12 grid w-full grid-cols-2 gap-2"
+              initial="hidden"
+              animate="visible"
+              variants={attrVariants}
+            >
+              {attr.map((x) => {
+                return (
+                  <motion.div
+                    className="flex h-16 w-full flex-col items-start justify-center rounded-xl border-[1px] border-gray/50 px-4 dark:border-light/50"
+                    variants={attrItems}
+                  >
+                    <p className="text-xs uppercase tracking-wider text-gray dark:text-light">
+                      {x.trait_type}
+                    </p>
+                    <p className="w-full truncate text-sm font-medium text-black dark:text-white">
+                      {x.value}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </>
+        )
       );
     }
   };
@@ -204,7 +207,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
                       className="px-2"
                     >
                       <Image
-                        src="/assets/looksrare1.svg"
+                        src="/assets/looksrare.svg"
                         height={30}
                         width={30}
                         className="cursor-pointer"
@@ -243,28 +246,32 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
                     <p>Details</p>
                     <CgDetailsMore className=" " />
                   </div>
-                  <div
-                    className={`${
-                      info == "description"
-                        ? "border-transparent bg-dark dark:bg-white dark:text-black"
-                        : "border-black text-black dark:border-white dark:text-white"
-                    } group col-span-1 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-lg border p-2 py-3 text-sm  drop-shadow-md hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black`}
-                    onClick={() => setInfo("description")}
-                  >
-                    <p>Description</p>
-                    <MdOutlineDescription className=" " />
-                  </div>
-                  <div
-                    className={`${
-                      info == "attributes"
-                        ? "border-transparent bg-dark dark:bg-white dark:text-black"
-                        : "border-black text-black dark:border-white dark:text-white"
-                    } group col-span-1 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-lg border p-2 py-3 text-sm  drop-shadow-md hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black`}
-                    onClick={() => setInfo("attributes")}
-                  >
-                    <p>Attributes</p>
-                    <IoStatsChartOutline className=" " />
-                  </div>
+                  {desc && (
+                    <div
+                      className={`${
+                        info == "description"
+                          ? "border-transparent bg-dark dark:bg-white dark:text-black"
+                          : "border-black text-black dark:border-white dark:text-white"
+                      } group col-span-1 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-lg border p-2 py-3 text-sm  drop-shadow-md hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black`}
+                      onClick={() => setInfo("description")}
+                    >
+                      <p>Description</p>
+                      <MdOutlineDescription className=" " />
+                    </div>
+                  )}
+                  {typeof attr !== "undefined" && (
+                    <div
+                      className={`${
+                        info == "attributes"
+                          ? "border-transparent bg-dark dark:bg-white dark:text-black"
+                          : "border-black text-black dark:border-white dark:text-white"
+                      } group col-span-1 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-lg border p-2 py-3 text-sm  drop-shadow-md hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black`}
+                      onClick={() => setInfo("attributes")}
+                    >
+                      <p>Attributes</p>
+                      <IoStatsChartOutline className=" " />
+                    </div>
+                  )}
                 </div>
                 {infoHanlder()}
               </div>
