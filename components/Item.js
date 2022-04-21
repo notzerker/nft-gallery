@@ -40,7 +40,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
   const infoHanlder = () => {
     if (info == "details") {
       return (
-        <div className="mb-10 flex w-full flex-col space-y-6">
+        <div className="mb-10 flex w-full flex-col space-y-8">
           <div>
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
               Creator
@@ -234,42 +234,42 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
                     </motion.a>
                   </div>
                 </div>
-                <div className="relative mb-6 grid w-full grid-cols-3 gap-x-2">
+                <div className="relative mb-6 flex w-full items-center justify-start space-x-6">
                   <div
                     className={`${
                       info == "details"
-                        ? "border-transparent bg-dark dark:bg-white dark:text-black"
-                        : "border-black text-black dark:border-white dark:text-white"
-                    } group col-span-1 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-lg border p-2 py-3 text-sm  drop-shadow-md hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black`}
+                        ? " bg-dark hover:bg-black/60 dark:bg-white/90 dark:text-black dark:hover:bg-white/60"
+                        : " text-gray hover:bg-black/10 dark:text-gray dark:hover:bg-white/10"
+                    } group cursor-pointer flex-row space-x-2 rounded-xl px-4   py-2 text-sm font-semibold  drop-shadow-md`}
                     onClick={() => setInfo("details")}
                   >
                     <p>Details</p>
-                    <CgDetailsMore className=" " />
+                    {/* <CgDetailsMore className=" " /> */}
                   </div>
                   {desc && (
                     <div
                       className={`${
                         info == "description"
-                          ? "border-transparent bg-dark dark:bg-white dark:text-black"
-                          : "border-black text-black dark:border-white dark:text-white"
-                      } group col-span-1 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-lg border p-2 py-3 text-sm  drop-shadow-md hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black`}
+                          ? " bg-dark hover:bg-black/60 dark:bg-white/90 dark:text-black dark:hover:bg-white/60"
+                          : " text-gray hover:bg-black/10 dark:text-gray dark:hover:bg-white/10"
+                      } group cursor-pointer flex-row space-x-2 rounded-xl  px-4 py-2 text-sm font-semibold  drop-shadow-md`}
                       onClick={() => setInfo("description")}
                     >
                       <p>Description</p>
-                      <MdOutlineDescription className=" " />
+                      {/* <MdOutlineDescription className=" " /> */}
                     </div>
                   )}
                   {typeof attr !== "undefined" && (
                     <div
                       className={`${
                         info == "attributes"
-                          ? "border-transparent bg-dark dark:bg-white dark:text-black"
-                          : "border-black text-black dark:border-white dark:text-white"
-                      } group col-span-1 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-lg border p-2 py-3 text-sm  drop-shadow-md hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black`}
+                          ? " bg-dark hover:bg-black/60 dark:bg-white/90 dark:text-black dark:hover:bg-white/60"
+                          : " text-gray hover:bg-black/10 dark:text-gray dark:hover:bg-white/10"
+                      } group cursor-pointer flex-row space-x-2 rounded-xl px-4  py-2 text-sm font-semibold  drop-shadow-md`}
                       onClick={() => setInfo("attributes")}
                     >
                       <p>Attributes</p>
-                      <IoStatsChartOutline className=" " />
+                      {/* <IoStatsChartOutline className=" " /> */}
                     </div>
                   )}
                 </div>

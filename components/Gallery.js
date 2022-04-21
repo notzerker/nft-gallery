@@ -164,7 +164,7 @@ const Gallery = () => {
             className={`${dark && "dark"} `}
           >
             <div className="h-fit w-44 rounded-xl bg-white p-2 text-black drop-shadow-md dark:bg-dark dark:text-white md:-translate-x-16">
-              <DropdownMenuPrimitive.Item>
+              <DropdownMenuPrimitive.Item className="focus:outline-none">
                 <a
                   href={"https://opensea.io/" + addr}
                   target="_blank"
@@ -174,7 +174,7 @@ const Gallery = () => {
                   <p>Opensea</p>
                 </a>
               </DropdownMenuPrimitive.Item>
-              <DropdownMenuPrimitive.Item>
+              <DropdownMenuPrimitive.Item className="focus:outline-none">
                 <a
                   href={"https://looksrare.org/accounts/" + addr}
                   target="_blank"
@@ -184,7 +184,7 @@ const Gallery = () => {
                   <p>LooksRare</p>
                 </a>
               </DropdownMenuPrimitive.Item>
-              <DropdownMenuPrimitive.Item>
+              <DropdownMenuPrimitive.Item className="focus:outline-none">
                 <a
                   href={"https://www.gem.xyz/profile/" + addr}
                   target="_blank"
@@ -192,6 +192,20 @@ const Gallery = () => {
                 >
                   <Image src="/assets/gem.svg" height={20} width={20} />
                   <p>Gem</p>
+                </a>
+              </DropdownMenuPrimitive.Item>
+              <DropdownMenuPrimitive.Item className="focus:outline-none">
+                <a
+                  href={"https://etherscan.io/address/" + addr}
+                  target="_blank"
+                  className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none"
+                >
+                  <Image
+                    src="/assets/etherscan-logo-circle.svg"
+                    height={20}
+                    width={20}
+                  />
+                  <p>Etherscan</p>
                 </a>
               </DropdownMenuPrimitive.Item>
               <DropdownMenuPrimitive.Separator className="my-1 h-[1px] w-full rounded-xl bg-gray" />
@@ -208,21 +222,20 @@ const Gallery = () => {
       </div>
 
       <div className=" mb-24 flex flex-row items-center justify-center md:space-x-24">
-        <div className="relative flex flex-col items-center justify-center space-y-4 rounded-xl bg-white p-16 drop-shadow-md dark:bg-dark">
-          <div className="absolute top-4 left-4 p-2">
-            <CgProfile className="cursor-pointer text-xl text-gray hover:text-black dark:hover:text-white" />
-          </div>
-          <h1 className="flex w-[20rem] items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
+        <div className="relative flex flex-row items-center justify-center space-x-4 rounded-xl bg-white p-16 drop-shadow-md dark:bg-dark">
+          {/* <CgProfile className="cursor-pointer text-5xl text-gray hover:text-black dark:hover:text-white" /> */}
+          <h1 className="flex w-fit items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
             {truncateAddr}
           </h1>
-          <a
+          <FiCopy className="cursor-pointer text-2xl text-gray hover:text-black dark:hover:text-white" />
+          {/* <a
             className="flex cursor-pointer flex-row items-start justify-start space-x-1 text-center text-gray hover:text-black dark:hover:text-white"
             href={"https://etherscan.io/address/" + addr}
             target="_blank"
           >
             <p className="">{truncateAddr}</p>
             <FiArrowUpRight />
-          </a>
+          </a> */}
         </div>
         <div className="relative hidden h-full flex-row space-x-12 md:flex">
           <div className="flex flex-col space-y-2">
