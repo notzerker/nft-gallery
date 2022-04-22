@@ -11,7 +11,7 @@ import { FiArrowUpRight } from "react-icons/fi";
 const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
   const [imageLoading, setImageLoading] = useState(true);
   const [dialogImageLoading, setDialogImageLoading] = useState(true);
-  const [info, setInfo] = useState("details");
+  const [info, setInfo] = useState("description");
 
   const truncateAddress = (addr) => {
     const addressLength = addr.length;
@@ -38,7 +38,11 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
   };
 
   const infoHanlder = () => {
-    if (info == "details") {
+    if (info == "description") {
+      return (
+        desc && <p className="mb-10 w-full text-gray dark:text-light">{desc}</p>
+      );
+    } else if (info == "details") {
       return (
         <div className="mb-10 flex w-full flex-col space-y-8">
           <div>
@@ -72,47 +76,31 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
           </div>
         </div>
       );
-    } else if (info == "description") {
-      return (
-        desc && (
-          <>
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
-              Description
-            </p>
-            <p className="mb-10 w-full text-gray dark:text-light">{desc}</p>
-          </>
-        )
-      );
     } else {
       return (
-        typeof attr !== "undefined" && (
-          <>
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
-              Attributes
-            </p>
-            <motion.div
-              className="mb-12 grid w-full grid-cols-2 gap-2"
-              initial="hidden"
-              animate="visible"
-              variants={attrVariants}
-            >
-              {attr.map((x) => {
-                return (
-                  <motion.div
-                    className="flex h-16 w-full flex-col items-start justify-center rounded-xl border-[1px] border-gray/50 px-4 dark:border-light/50"
-                    variants={attrItems}
-                  >
-                    <p className="text-xs uppercase tracking-wider text-gray dark:text-light">
-                      {x.trait_type}
-                    </p>
-                    <p className="w-full truncate text-sm font-medium text-black dark:text-white">
-                      {x.value}
-                    </p>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </>
+        attr && (
+          <motion.div
+            className="mb-12 grid w-full grid-cols-2 gap-2"
+            initial="hidden"
+            animate="visible"
+            variants={attrVariants}
+          >
+            {attr.map((x) => {
+              return (
+                <motion.div
+                  className="flex h-16 w-full flex-col items-start justify-center rounded-xl border-[1px] border-gray/50 bg-dark/5 px-4 dark:border-light/50 dark:bg-white/5"
+                  variants={attrItems}
+                >
+                  <p className="text-xs uppercase tracking-wider text-gray dark:text-light">
+                    {x.trait_type}
+                  </p>
+                  <p className="w-full truncate text-sm font-semibold text-black dark:text-white">
+                    {x.value}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         )
       );
     }
@@ -237,25 +225,25 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
                 <div className="relative mb-6 flex w-full items-center justify-start space-x-6">
                   <div
                     className={`${
-                      info == "details"
+                      info == "description"
                         ? " bg-dark hover:bg-black/60 dark:bg-white/90 dark:text-black dark:hover:bg-white/60"
                         : " text-gray hover:bg-black/10 dark:text-gray dark:hover:bg-white/10"
                     } group cursor-pointer flex-row space-x-2 rounded-xl px-4   py-2 text-sm font-semibold  drop-shadow-md`}
-                    onClick={() => setInfo("details")}
+                    onClick={() => setInfo("description")}
                   >
-                    <p>Details</p>
+                    <p>Description</p>
                     {/* <CgDetailsMore className=" " /> */}
                   </div>
                   {desc && (
                     <div
                       className={`${
-                        info == "description"
+                        info == "details"
                           ? " bg-dark hover:bg-black/60 dark:bg-white/90 dark:text-black dark:hover:bg-white/60"
                           : " text-gray hover:bg-black/10 dark:text-gray dark:hover:bg-white/10"
                       } group cursor-pointer flex-row space-x-2 rounded-xl  px-4 py-2 text-sm font-semibold  drop-shadow-md`}
-                      onClick={() => setInfo("description")}
+                      onClick={() => setInfo("details")}
                     >
-                      <p>Description</p>
+                      <p>Details</p>
                       {/* <MdOutlineDescription className=" " /> */}
                     </div>
                   )}
