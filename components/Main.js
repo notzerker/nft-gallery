@@ -21,8 +21,6 @@ const Main = () => {
     router.push("/" + address);
   };
 
-  console.log(dark);
-
   return (
     <div className={`${dark && "dark"}`}>
       <div

@@ -8,11 +8,12 @@ import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import { addRequestMeta } from "next/dist/server/request-meta";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Link from "next/link";
-import { FiArrowUpRight } from "react-icons/fi";
+import { FiArrowDown, FiArrowDownCircle, FiArrowUpRight } from "react-icons/fi";
 import { hexToNumberString } from "web3-utils";
 import { FiMoon, FiSun, FiCopy } from "react-icons/fi";
 import useStore from "../lib/store";
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import * as Select from "@radix-ui/react-select";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import Item from "./Item";
 import Image from "next/image";
@@ -21,12 +22,15 @@ import { Context } from "./Context";
 const Gallery = () => {
   const [url, setUrl] = useState();
   const [collections, setCollections] = useState([]);
+  const [selectedCol, setSelectedCol] = useState([]);
   const [image, setImage] = useState();
   const [names, setNames] = useState([]);
   const [result, setResult] = useState([]);
   const [balance, setBalance] = useState("0.00");
   const [addr, setAddr] = useState("");
   const [truncateAddr, setTruncateAddr] = useState("");
+  const [search, setSearch] = useState("");
+  const [initialResult, setInitialResult] = useState([]);
 
   const context = useContext(Context);
   const dark = context.dark;
@@ -60,6 +64,7 @@ const Gallery = () => {
             owner: addr,
           })
           .then((res) => {
+            setInitialResult(res.ownedNfts);
             setResult(res.ownedNfts);
           })
           .catch((error) => {
@@ -83,12 +88,33 @@ const Gallery = () => {
     }
   }, [address]);
 
-  result.map((data) => {
+  result.forEach((data) => {
     if (!collections.includes(data.contract.address)) {
       collections.push(data.contract.address);
     }
-    const name = JSON.stringify(data.name);
   });
+
+  useEffect(() => {
+    if (search) {
+      const searchResult = initialResult.filter((data) =>
+        data.metadata.name.toLowerCase().includes(search.toLowerCase())
+      );
+      setResult(searchResult);
+    } else {
+      setResult(initialResult);
+    }
+  }, [search]);
+
+  useEffect(() => {
+    if (selectedCol) {
+      const colResult = initialResult.filter(
+        (data) => data.contract.address == selectedCol
+      );
+      setResult(colResult);
+    } else {
+      setResult(initialResult);
+    }
+  }, [selectedCol]);
 
   const copyHandler = () => {
     navigator.clipboard.writeText(address);
@@ -97,7 +123,7 @@ const Gallery = () => {
   return (
     <div className={`${dark && "dark"}`}>
       <div
-        className={`relative flex min-h-screen w-full flex-col items-center justify-start bg-gradient-to-b from-[#ffffff] to-[#f1f1f1f1] py-40 dark:from-[#000000] dark:to-[#232323]`}
+        className={`relative flex min-h-screen w-full flex-col items-center justify-start bg-gradient-to-b from-[#ffffff] to-[#f1f1f1f1] px-8 py-40 dark:from-[#000000] dark:to-[#232323] md:px-12 lg:px-28`}
       >
         <Link href="/">
           <motion.a
@@ -127,8 +153,8 @@ const Gallery = () => {
           >
             {dark ? <FiSun /> : <FiMoon />}
           </motion.a>
-          <DropdownMenuPrimitive.Root>
-            <DropdownMenuPrimitive.Trigger className="focus:outline-none">
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger className="focus:outline-none">
               <motion.div
                 className="flex h-full cursor-pointer flex-row items-center justify-center rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
                 whileHover={{ scale: 1.03 }}
@@ -136,13 +162,13 @@ const Gallery = () => {
               >
                 <BsThreeDots className="cursor-pointer text-gray hover:text-black dark:hover:text-white" />
               </motion.div>
-            </DropdownMenuPrimitive.Trigger>
-            <DropdownMenuPrimitive.Content
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content
               sideOffset={10}
               className={`${dark && "dark"} `}
             >
               <div className="h-fit w-44 rounded-xl bg-white p-2 text-black drop-shadow-md dark:bg-dark dark:text-white md:-translate-x-16">
-                <DropdownMenuPrimitive.Item className="focus:outline-none">
+                <DropdownMenu.Item className="focus:outline-none">
                   <a
                     href={"https://opensea.io/" + addr}
                     target="_blank"
@@ -151,8 +177,8 @@ const Gallery = () => {
                     <Image src="/assets/opensea.svg" height={20} width={20} />
                     <p>Opensea</p>
                   </a>
-                </DropdownMenuPrimitive.Item>
-                <DropdownMenuPrimitive.Item className="focus:outline-none">
+                </DropdownMenu.Item>
+                <DropdownMenu.Item className="focus:outline-none">
                   <a
                     href={"https://looksrare.org/accounts/" + addr}
                     target="_blank"
@@ -161,8 +187,8 @@ const Gallery = () => {
                     <Image src="/assets/looksrare.svg" height={20} width={20} />
                     <p>LooksRare</p>
                   </a>
-                </DropdownMenuPrimitive.Item>
-                <DropdownMenuPrimitive.Item className="focus:outline-none">
+                </DropdownMenu.Item>
+                <DropdownMenu.Item className="focus:outline-none">
                   <a
                     href={"https://www.gem.xyz/profile/" + addr}
                     target="_blank"
@@ -171,8 +197,8 @@ const Gallery = () => {
                     <Image src="/assets/gem.svg" height={20} width={20} />
                     <p>Gem</p>
                   </a>
-                </DropdownMenuPrimitive.Item>
-                <DropdownMenuPrimitive.Item className="focus:outline-none">
+                </DropdownMenu.Item>
+                <DropdownMenu.Item className="focus:outline-none">
                   <a
                     href={"https://etherscan.io/address/" + addr}
                     target="_blank"
@@ -185,21 +211,21 @@ const Gallery = () => {
                     />
                     <p>Etherscan</p>
                   </a>
-                </DropdownMenuPrimitive.Item>
-                <DropdownMenuPrimitive.Separator className="my-1 h-[1px] w-full rounded-xl bg-gray" />
-                <DropdownMenuPrimitive.Item
+                </DropdownMenu.Item>
+                <DropdownMenu.Separator className="my-1 h-[1px] w-full rounded-xl bg-gray" />
+                <DropdownMenu.Item
                   className="flex w-full cursor-pointer flex-row items-center justify-start space-x-3 rounded-lg p-2 font-medium hover:bg-light/10 focus:outline-none"
                   onClick={() => copyHandler()}
                 >
                   <FiCopy />
                   <p>Copy address</p>
-                </DropdownMenuPrimitive.Item>
+                </DropdownMenu.Item>
               </div>
-            </DropdownMenuPrimitive.Content>
-          </DropdownMenuPrimitive.Root>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
         </div>
 
-        <div className=" mb-24 flex flex-row items-center justify-center md:space-x-24">
+        <div className=" mb-16 flex flex-row items-center justify-center md:space-x-24">
           <div className="relative flex flex-row items-center justify-center space-x-4 rounded-xl bg-white p-16 drop-shadow-md dark:bg-dark">
             <h1 className="flex w-fit items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
               {truncateAddr}
@@ -230,7 +256,15 @@ const Gallery = () => {
             </div>
           </div>
         </div>
-        <div className=" grid w-full grid-cols-2 gap-4 px-8 md:grid-cols-3 md:gap-4 md:px-12 lg:grid-cols-4 lg:gap-6 lg:px-28">
+        <div className="mb-8 flex w-full flex-row space-x-4">
+          <input
+            className="border-1  w-full rounded-xl border-black bg-white py-4 pr-16 pl-6 text-black placeholder-gray drop-shadow-md hover:placeholder-black focus:outline-none dark:border-white dark:bg-dark dark:text-white dark:placeholder-light dark:hover:placeholder-white"
+            placeholder="Search NFTs by name or token ID"
+            onChange={(e) => setSearch(e.target.value)}
+            spellCheck={false}
+          />
+        </div>
+        <div className=" grid w-full grid-cols-2 gap-4 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-6">
           {result.map((data) => {
             var img = "";
             var valid = true;
