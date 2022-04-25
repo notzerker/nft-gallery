@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { IoOpenOutline, IoStatsChartOutline } from "react-icons/io5";
@@ -11,7 +11,8 @@ import { FiArrowUpRight } from "react-icons/fi";
 const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
   const [imageLoading, setImageLoading] = useState(true);
   const [dialogImageLoading, setDialogImageLoading] = useState(true);
-  const [info, setInfo] = useState("description");
+  const [info, setInfo] = useState("");
+  var valid = false;
 
   const truncateAddress = (addr) => {
     const addressLength = addr.length;
@@ -37,10 +38,36 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
     visible: { opacity: 1 },
   };
 
+  if (attr) {
+    if (Array.isArray(attr)) {
+      valid = true;
+    }
+  }
+
+  useEffect(() => {
+    if (desc) {
+      setInfo("description");
+    } else {
+      setInfo("details");
+    }
+  }, []);
+
+  const tokenHandler = () => {
+    if (tokenId.includes("0x")) {
+      return hexToNumberString(tokenId);
+    } else {
+      return tokenId;
+    }
+  };
+
   const infoHanlder = () => {
     if (info == "description") {
       return (
-        desc && <p className="mb-10 w-full text-gray dark:text-light">{desc}</p>
+        desc && (
+          <div className="w-full overflow-hidden">
+            <p className="mb-10 text-gray dark:text-light">{desc}</p>
+          </div>
+        )
       );
     } else if (info == "details") {
       return (
@@ -63,7 +90,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
               Token ID
             </p>
             <p className="darkLtext-light flex w-64 items-center overflow-hidden truncate text-gray dark:text-light">
-              {hexToNumberString(tokenId)}
+              {tokenHandler()}
             </p>
           </div>
           <div>
@@ -78,7 +105,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
       );
     } else {
       return (
-        attr && (
+        valid && (
           <motion.div
             className="mb-12 grid w-full grid-cols-2 gap-2"
             initial="hidden"
@@ -168,7 +195,7 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
                         "https://opensea.io/assets/" +
                         contract +
                         "/" +
-                        hexToNumberString(tokenId)
+                        tokenHandler()
                       }
                       target="_blank"
                       whileHover={{ scale: 1.05 }}
@@ -223,31 +250,30 @@ const Item = ({ name, tokenId, img, desc, attr, contract, tokenStd, dark }) => {
                   </div>
                 </div>
                 <div className="relative mb-6 flex w-full items-center justify-start space-x-6">
-                  <div
-                    className={`${
-                      info == "description"
-                        ? " bg-dark hover:bg-black/60 dark:bg-white/90 dark:text-black dark:hover:bg-white/60"
-                        : " text-gray hover:bg-black/10 dark:text-gray dark:hover:bg-white/10"
-                    } group cursor-pointer flex-row space-x-2 rounded-xl px-4   py-2 text-sm font-semibold  drop-shadow-md`}
-                    onClick={() => setInfo("description")}
-                  >
-                    <p>Description</p>
-                    {/* <CgDetailsMore className=" " /> */}
-                  </div>
                   {desc && (
                     <div
                       className={`${
-                        info == "details"
+                        info == "description"
                           ? " bg-dark hover:bg-black/60 dark:bg-white/90 dark:text-black dark:hover:bg-white/60"
                           : " text-gray hover:bg-black/10 dark:text-gray dark:hover:bg-white/10"
-                      } group cursor-pointer flex-row space-x-2 rounded-xl  px-4 py-2 text-sm font-semibold  drop-shadow-md`}
-                      onClick={() => setInfo("details")}
+                      } group cursor-pointer flex-row space-x-2 rounded-xl px-4   py-2 text-sm font-semibold  drop-shadow-md`}
+                      onClick={() => setInfo("description")}
                     >
-                      <p>Details</p>
-                      {/* <MdOutlineDescription className=" " /> */}
+                      <p>Description</p>
+                      {/* <CgDetailsMore className=" " /> */}
                     </div>
                   )}
-                  {typeof attr !== "undefined" && (
+                  <div
+                    className={`${
+                      info == "details"
+                        ? " bg-dark hover:bg-black/60 dark:bg-white/90 dark:text-black dark:hover:bg-white/60"
+                        : " text-gray hover:bg-black/10 dark:text-gray dark:hover:bg-white/10"
+                    } group cursor-pointer flex-row space-x-2 rounded-xl  px-4 py-2 text-sm font-semibold  drop-shadow-md`}
+                    onClick={() => setInfo("details")}
+                  >
+                    <p>Details</p>
+                  </div>
+                  {valid && (
                     <div
                       className={`${
                         info == "attributes"

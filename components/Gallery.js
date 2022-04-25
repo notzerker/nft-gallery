@@ -18,29 +18,40 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Item from "./Item";
 import Image from "next/image";
 import { Context } from "./Context";
+import useNFTs from "../hooks/useNFTs";
+import useCollections from "../hooks/useCollections";
+import useBalance from "../hooks/useBalance";
 
 const Gallery = () => {
   const [url, setUrl] = useState();
-  const [collections, setCollections] = useState([]);
   const [selectedCol, setSelectedCol] = useState([]);
   const [image, setImage] = useState();
   const [names, setNames] = useState([]);
-  const [result, setResult] = useState([]);
-  const [balance, setBalance] = useState("0.00");
   const [addr, setAddr] = useState("");
   const [truncateAddr, setTruncateAddr] = useState("");
   const [search, setSearch] = useState("");
-  const [initialResult, setInitialResult] = useState([]);
+  const [address, setAddress] = useState("");
+  const [result, setResult] = useState([]);
 
   const context = useContext(Context);
   const dark = context.dark;
 
-  const apiKey = "SnGAV1KNt2faUFkP0C1d-TjoBcQB1HiU";
   const router = useRouter();
-  const { address } = router.query;
-  const web3 = createAlchemyWeb3(
-    `https://eth-mainnet.alchemyapi.io/v2/${apiKey}`
-  );
+  const { address: urlAddress } = router.query;
+
+  useEffect(() => {
+    setAddress(urlAddress);
+  }, [urlAddress]);
+
+  const initialResult = useNFTs(address);
+  const collections = useCollections(initialResult);
+  const balance = useBalance(address);
+
+  useEffect(() => {
+    setResult(initialResult);
+  }, [initialResult]);
+
+  console.log(initialResult);
 
   useEffect(() => {
     if (address) {
@@ -57,44 +68,11 @@ const Gallery = () => {
         address = address + ".eth";
         setTruncateAddr(address);
       }
-
-      async function getNFTs(addr) {
-        await web3.alchemy
-          .getNfts({
-            owner: addr,
-          })
-          .then((res) => {
-            setInitialResult(res.ownedNfts);
-            setResult(res.ownedNfts);
-          })
-          .catch((error) => {
-            alert(error);
-          });
-      }
-
-      async function getBalance(addr) {
-        await web3.eth
-          .getBalance(addr.toString())
-          .then((res) => {
-            const ethBalance = res / 10 ** 18;
-            setBalance(ethBalance);
-          })
-          .catch((error) => {
-            alert(error);
-          });
-      }
-      getNFTs(address);
-      getBalance(address);
     }
   }, [address]);
 
-  result.forEach((data) => {
-    if (!collections.includes(data.contract.address)) {
-      collections.push(data.contract.address);
-    }
-  });
-
   useEffect(() => {
+    const initial = initialResult;
     if (search) {
       const searchResult = initialResult.filter((data) =>
         data.metadata.name.toLowerCase().includes(search.toLowerCase())
@@ -104,17 +82,6 @@ const Gallery = () => {
       setResult(initialResult);
     }
   }, [search]);
-
-  useEffect(() => {
-    if (selectedCol) {
-      const colResult = initialResult.filter(
-        (data) => data.contract.address == selectedCol
-      );
-      setResult(colResult);
-    } else {
-      setResult(initialResult);
-    }
-  }, [selectedCol]);
 
   const copyHandler = () => {
     navigator.clipboard.writeText(address);
@@ -277,20 +244,19 @@ const Gallery = () => {
             if (data.title == "") {
               valid = false;
             }
-
-            return valid ? (
-              <Item
-                name={data.title}
-                tokenId={data.id.tokenId}
-                tokenStd={data.id.tokenMetadata.tokenType}
-                img={img}
-                desc={data.description}
-                attr={data.metadata.attributes}
-                contract={data.contract.address}
-                dark={dark}
-              />
-            ) : (
-              ""
+            return (
+              valid && (
+                <Item
+                  name={data.title}
+                  tokenId={data.id.tokenId}
+                  tokenStd={data.id.tokenMetadata.tokenType}
+                  img={img}
+                  desc={data.description}
+                  attr={data.metadata.attributes}
+                  contract={data.contract.address}
+                  dark={dark}
+                />
+              )
             );
           })}
         </div>
