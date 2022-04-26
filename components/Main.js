@@ -23,14 +23,13 @@ const Main = () => {
 
   return (
     <div className={`${dark && "dark"}`}>
+      <div className="fixed top-0 h-[200vh] w-[200vw] translate-x-[-50vw] translate-y-[-100vh] bg-gradient-radial from-[#08FD8610] to-transparent"></div>
       <div
         className={`relative h-screen w-full overflow-hidden
-        overscroll-y-none bg-gradient-to-b from-[#ffffff] to-[#f1f1f1f1] dark:from-[#000000] dark:to-[#232323]`}
+        overscroll-y-none`}
       >
         <motion.a
           className="absolute top-16 right-8 flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white md:right-16"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 1 }}
           onClick={context.setDarkHandler}
         >
           {dark ? <FiSun /> : <FiMoon />}

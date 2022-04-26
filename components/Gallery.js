@@ -14,6 +14,7 @@ import { FiMoon, FiSun, FiCopy } from "react-icons/fi";
 import useStore from "../lib/store";
 import * as Select from "@radix-ui/react-select";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import Item from "./Item";
 import Image from "next/image";
@@ -31,7 +32,9 @@ const Gallery = () => {
   const [truncateAddr, setTruncateAddr] = useState("");
   const [search, setSearch] = useState("");
   const [address, setAddress] = useState("");
-  const [result, setResult] = useState([]);
+  const [items, setItems] = useState([]);
+  const [counter, setCounter] = useState(1);
+  const [result, setResult] = useState();
 
   const context = useContext(Context);
   const dark = context.dark;
@@ -43,15 +46,13 @@ const Gallery = () => {
     setAddress(urlAddress);
   }, [urlAddress]);
 
-  const initialResult = useNFTs(address);
-  const collections = useCollections(initialResult);
+  const { NFTcount, initialResult } = useNFTs(address);
+  // const collections = useCollections(initialResult);
   const balance = useBalance(address);
 
   useEffect(() => {
-    setResult(initialResult);
+    setItems(initialResult.slice(0, 16));
   }, [initialResult]);
-
-  console.log(initialResult);
 
   useEffect(() => {
     if (address) {
@@ -75,11 +76,11 @@ const Gallery = () => {
     const initial = initialResult;
     if (search) {
       const searchResult = initialResult.filter((data) =>
-        data.metadata.name.toLowerCase().includes(search.toLowerCase())
+        data.title.toLowerCase().includes(search.toLowerCase())
       );
       setResult(searchResult);
     } else {
-      setResult(initialResult);
+      setResult();
     }
   }, [search]);
 
@@ -87,25 +88,32 @@ const Gallery = () => {
     navigator.clipboard.writeText(address);
   };
 
+  const fetchItems = () => {
+    const endIndex = 16 * (counter + 1);
+    setCounter(counter + 1);
+    if (endIndex > initialResult.length) {
+      setItems(initialResult);
+    } else {
+      setItems(initialResult.slice(0, endIndex));
+    }
+  };
+
+  console.log(items);
+
   return (
     <div className={`${dark && "dark"}`}>
+      <div className="fixed top-0 h-[200vh] w-[200vw] translate-x-[-50vw] translate-y-[-100vh] bg-gradient-radial from-[#08FD8610] to-transparent"></div>
       <div
-        className={`relative flex min-h-screen w-full flex-col items-center justify-start bg-gradient-to-b from-[#ffffff] to-[#f1f1f1f1] px-8 py-40 dark:from-[#000000] dark:to-[#232323] md:px-12 lg:px-28`}
+        className={`relative flex min-h-screen w-full flex-col items-center justify-start  px-8 py-40  md:px-12 lg:px-28`}
       >
         <Link href="/">
-          <motion.a
-            className="absolute top-8 left-8 cursor-pointer rounded-xl bg-white p-4 text-2xl text-black drop-shadow-md hover:text-black dark:bg-dark dark:text-gray dark:hover:text-white md:top-16 md:left-16 "
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 1 }}
-          >
+          <motion.a className="absolute top-8 left-8 cursor-pointer rounded-xl bg-white p-4 text-2xl text-black drop-shadow-md hover:text-black dark:bg-dark dark:text-gray dark:hover:text-white md:top-16 md:left-16 ">
             <IoIosArrowRoundBack />
           </motion.a>
         </Link>
         <div className="absolute top-8 right-8 flex flex-row space-x-4 md:top-16 md:right-16">
           <motion.a
             className="flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 1 }}
             href={"https://etherscan.io/address/" + addr}
             target="_blank"
           >
@@ -114,19 +122,13 @@ const Gallery = () => {
           </motion.a>
           <motion.a
             className=" flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 1 }}
             onClick={context.setDarkHandler}
           >
             {dark ? <FiSun /> : <FiMoon />}
           </motion.a>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger className="focus:outline-none">
-              <motion.div
-                className="flex h-full cursor-pointer flex-row items-center justify-center rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 1 }}
-              >
+              <motion.div className="flex h-full cursor-pointer flex-row items-center justify-center rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white">
                 <BsThreeDots className="cursor-pointer text-gray hover:text-black dark:hover:text-white" />
               </motion.div>
             </DropdownMenu.Trigger>
@@ -134,7 +136,7 @@ const Gallery = () => {
               sideOffset={10}
               className={`${dark && "dark"} `}
             >
-              <div className="h-fit w-44 rounded-xl bg-white p-2 text-black drop-shadow-md dark:bg-dark dark:text-white md:-translate-x-16">
+              <div className="h-fit w-64 rounded-xl bg-white p-2 text-black drop-shadow-md dark:bg-dark dark:text-white md:-translate-x-0">
                 <DropdownMenu.Item className="focus:outline-none">
                   <a
                     href={"https://opensea.io/" + addr}
@@ -200,26 +202,11 @@ const Gallery = () => {
           </div>
           <div className="relative hidden h-full flex-row space-x-12 md:flex">
             <div className="flex flex-col space-y-2">
-              <p className="text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
+              <p className="text-sm font-semibold uppercase tracking-widest text-gray">
                 Items
               </p>
-              <h1 className="text-8xl font-extrabold text-black dark:text-white">
-                {result.length}
-              </h1>
-              <p className="text-gray dark:text-light">
-                Number of individual ERC721 tokens.
-              </p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <p className="text-sm font-semibold uppercase tracking-widest text-dark dark:text-gray">
-                Collections
-              </p>
-              <h1 className="text-8xl font-extrabold text-black dark:text-white">
-                {collections.length}
-              </h1>
-              <p className="text-gray dark:text-light">
-                Number of collections.
-              </p>
+              <h1 className="text-8xl font-extrabold text-white">{NFTcount}</h1>
+              <p className="text-light">Number of individual ERC721 tokens.</p>
             </div>
           </div>
         </div>
@@ -231,35 +218,52 @@ const Gallery = () => {
             spellCheck={false}
           />
         </div>
-        <div className=" grid w-full grid-cols-2 gap-4 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-6">
-          {result.map((data) => {
-            var img = "";
-            var valid = true;
-            if (data.media[0].gateway == "") {
-              img = data.metadata.image_url;
-            } else {
-              img = data.media[0].gateway;
-            }
-
-            if (data.title == "") {
-              valid = false;
-            }
-            return (
-              valid && (
-                <Item
-                  name={data.title}
-                  tokenId={data.id.tokenId}
-                  tokenStd={data.id.tokenMetadata.tokenType}
-                  img={img}
-                  desc={data.description}
-                  attr={data.metadata.attributes}
-                  contract={data.contract.address}
-                  dark={dark}
-                />
+        <InfiniteScroll
+          dataLength={items.length}
+          next={fetchItems}
+          hasMore={true}
+          className="grid w-full grid-cols-2 gap-4 overflow-visible md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-6"
+        >
+          {result
+            ? result.map(
+                (data) =>
+                  data.title !== "" && (
+                    <Item
+                      name={data.title}
+                      tokenId={data.id.tokenId}
+                      tokenStd={data.id.tokenMetadata.tokenType}
+                      img={
+                        data.media[0].gateway === ""
+                          ? data.metadata.image_url
+                          : data.media[0].gateway
+                      }
+                      desc={data.description}
+                      attr={data.metadata.attributes}
+                      contract={data.contract.address}
+                      dark={dark}
+                    />
+                  )
               )
-            );
-          })}
-        </div>
+            : items.map(
+                (data) =>
+                  data.title !== "" && (
+                    <Item
+                      name={data.title}
+                      tokenId={data.id.tokenId}
+                      tokenStd={data.id.tokenMetadata.tokenType}
+                      img={
+                        data.media[0].gateway === ""
+                          ? data.metadata.image_url
+                          : data.media[0].gateway
+                      }
+                      desc={data.description}
+                      attr={data.metadata.attributes}
+                      contract={data.contract.address}
+                      dark={dark}
+                    />
+                  )
+              )}
+        </InfiniteScroll>
       </div>
     </div>
   );

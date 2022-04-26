@@ -11,6 +11,9 @@ module.exports = {
         dark: "#171717",
         gray: "#808080",
       },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      },
     },
     animation: {
       blob: "blob 7s infinite",

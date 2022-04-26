@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 function useNFTs(address) {
   const [initialResult, setInitialResult] = useState([]);
   const [pageKey, setPageKey] = useState();
+  const [NFTcount, setNFTcount] = useState(0);
 
   const apiKey = "SnGAV1KNt2faUFkP0C1d-TjoBcQB1HiU";
   const web3 = createAlchemyWeb3(
@@ -20,6 +21,7 @@ function useNFTs(address) {
         .then((res) => {
           const resultArray = res.ownedNfts.filter((nft) => !nft.error);
           setInitialResult(resultArray);
+          setNFTcount(res.totalCount);
           if (res.pageKey) {
             setPageKey(res.pageKey);
           }
@@ -58,7 +60,7 @@ function useNFTs(address) {
     }
   }, [initialResult]);
 
-  return initialResult;
+  return { NFTcount, initialResult };
 }
 
 export default useNFTs;
