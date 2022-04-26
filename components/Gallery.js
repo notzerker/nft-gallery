@@ -111,7 +111,7 @@ const Gallery = () => {
             <IoIosArrowRoundBack />
           </motion.a>
         </Link>
-        <div className="absolute top-8 right-8 flex flex-row space-x-4 md:top-16 md:right-16">
+        <div className="absolute top-8 right-8 flex flex-row space-x-2 md:top-16 md:right-16">
           <motion.a
             className="flex cursor-pointer flex-row items-center justify-center space-x-2 rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white"
             href={"https://etherscan.io/address/" + addr}
@@ -194,7 +194,7 @@ const Gallery = () => {
           </DropdownMenu.Root>
         </div>
 
-        <div className=" mb-16 flex flex-row items-center justify-center md:space-x-24">
+        <div className=" mb-12 flex flex-row items-center justify-center md:space-x-24">
           <div className="relative flex flex-row items-center justify-center space-x-4 rounded-xl bg-white p-16 drop-shadow-md dark:bg-dark">
             <h1 className="flex w-fit items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
               {truncateAddr}
@@ -210,9 +210,9 @@ const Gallery = () => {
             </div>
           </div>
         </div>
-        <div className="mb-8 flex w-full flex-row space-x-4">
+        <div className="mb-12 flex w-full flex-row items-center justify-center">
           <input
-            className="border-1  w-full rounded-xl border-black bg-white py-4 pr-16 pl-6 text-black placeholder-gray drop-shadow-md hover:placeholder-black focus:outline-none dark:border-white dark:bg-dark dark:text-white dark:placeholder-light dark:hover:placeholder-white"
+            className="border-1  w-1/2 rounded-xl border-black bg-white py-4 pr-16 pl-6 text-black placeholder-gray drop-shadow-md hover:placeholder-black focus:outline-none dark:border-white dark:bg-dark dark:text-white dark:placeholder-light dark:hover:placeholder-white"
             placeholder="Search NFTs by name or token ID"
             onChange={(e) => setSearch(e.target.value)}
             spellCheck={false}
