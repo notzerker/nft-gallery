@@ -35,13 +35,13 @@ const Main = () => {
           {dark ? <FiSun /> : <FiMoon />}
         </motion.a>
         <div className="flex h-full flex-col items-center justify-center">
-          <p className="text-lg uppercase tracking-widest text-black dark:text-white">
+          <p className="text-lg uppercase tracking-widest text-white">
             Welcome To
           </p>
-          <h1 className="p-4 text-center text-9xl font-extrabold tracking-tighter text-black dark:text-white">
+          <h1 className="p-4 text-center text-9xl font-extrabold tracking-tighter text-white">
             The Gallery.
           </h1>
-          <h2 className="text-kg mt-2 text-gray dark:text-light">
+          <h2 className="text-kg mt-2 text-light">
             Explore other's NFT collections on the Ethereum network.
           </h2>
           <motion.div

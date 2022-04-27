@@ -51,7 +51,9 @@ const Gallery = () => {
   const balance = useBalance(address);
 
   useEffect(() => {
-    setItems(initialResult.slice(0, 16));
+    if (items.length === 0) {
+      setItems(initialResult.slice(0, 16));
+    }
   }, [initialResult]);
 
   useEffect(() => {
@@ -193,26 +195,30 @@ const Gallery = () => {
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         </div>
-
-        <div className=" mb-12 flex flex-row items-center justify-center md:space-x-24">
-          <div className="relative flex flex-row items-center justify-center space-x-4 rounded-xl bg-white p-16 drop-shadow-md dark:bg-dark">
-            <h1 className="flex w-fit items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
-              {truncateAddr}
-            </h1>
-          </div>
-          <div className="relative hidden h-full flex-row space-x-12 md:flex">
-            <div className="flex flex-col space-y-2">
-              <p className="text-sm font-semibold uppercase tracking-widest text-gray">
-                Items
-              </p>
-              <h1 className="text-8xl font-extrabold text-white">{NFTcount}</h1>
-              <p className="text-light">Number of individual ERC721 tokens.</p>
+        <div className="mb-12 flex flex-row items-center justify-center md:space-x-24">
+          <div className="relative flex flex-row items-start justify-center space-x-16 rounded-xl bg-white p-16 drop-shadow-md dark:bg-dark">
+            <div className="relative hidden h-full flex-row space-x-12 md:flex">
+              <div className="flex flex-col space-y-2">
+                <p className="text-sm font-semibold uppercase tracking-widest text-gray">
+                  Address
+                </p>
+                <h1 className="flex w-fit items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
+                  {truncateAddr}
+                </h1>
+                {/* <p className="text-gray dark:text-light">
+                  Owns a total of{" "}
+                  <h1 className="inline font-semibold text-dark dark:text-white">
+                    {NFTcount}
+                  </h1>
+                  Non-fungible tokens.
+                </p> */}
+              </div>
             </div>
           </div>
         </div>
         <div className="mb-12 flex w-full flex-row items-center justify-center">
           <input
-            className="border-1  w-1/2 rounded-xl border-black bg-white py-4 pr-16 pl-6 text-black placeholder-gray drop-shadow-md hover:placeholder-black focus:outline-none dark:border-white dark:bg-dark dark:text-white dark:placeholder-light dark:hover:placeholder-white"
+            className="border-1 w-1/2 rounded-xl border-black bg-white py-4 pr-16 pl-6 text-black placeholder-gray drop-shadow-md hover:placeholder-black focus:outline-none dark:border-white dark:bg-dark dark:text-white dark:placeholder-light dark:hover:placeholder-white"
             placeholder="Search NFTs by name or token ID"
             onChange={(e) => setSearch(e.target.value)}
             spellCheck={false}
