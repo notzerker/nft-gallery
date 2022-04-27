@@ -104,7 +104,7 @@ const Gallery = () => {
 
   return (
     <div className={`${dark && "dark"}`}>
-      <div className="fixed top-0 h-[200vh] w-[200vw] translate-x-[-50vw] translate-y-[-100vh] bg-gradient-radial from-[#08FD8610] to-transparent"></div>
+      <div className="fixed top-0 h-[200vh] w-[200vw] translate-x-[-50vw] translate-y-[-100vh] bg-gradient-radial from-[#8608FD10] to-transparent"></div>
       <div
         className={`relative flex min-h-screen w-full flex-col items-center justify-start  px-8 py-40  md:px-12 lg:px-16`}
       >
