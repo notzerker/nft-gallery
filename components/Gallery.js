@@ -130,8 +130,8 @@ const Gallery = () => {
           </motion.a>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger className="focus:outline-none">
-              <motion.div className="flex h-full cursor-pointer flex-row items-center justify-center rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white">
-                <BsThreeDots className="cursor-pointer text-gray hover:text-black dark:hover:text-white" />
+              <motion.div className="group flex h-full cursor-pointer flex-row items-center justify-center rounded-xl bg-white p-4 text-gray drop-shadow-md hover:text-black dark:bg-dark dark:text-light dark:hover:text-white">
+                <BsThreeDots className="cursor-pointer text-gray group-hover:text-black dark:group-hover:text-white" />
               </motion.div>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content
