@@ -106,7 +106,7 @@ const Gallery = () => {
     <div className={`${dark && "dark"}`}>
       <div className="fixed top-0 h-[200vh] w-[200vw] translate-x-[-50vw] translate-y-[-100vh] bg-gradient-radial from-[#08FD8610] to-transparent"></div>
       <div
-        className={`relative flex min-h-screen w-full flex-col items-center justify-start  px-8 py-40  md:px-12 lg:px-28`}
+        className={`relative flex min-h-screen w-full flex-col items-center justify-start  px-8 py-40  md:px-12 lg:px-16`}
       >
         <Link href="/">
           <motion.a className="absolute top-8 left-8 cursor-pointer rounded-xl bg-white p-4 text-2xl text-black drop-shadow-md hover:text-black dark:bg-dark dark:text-gray dark:hover:text-white md:top-16 md:left-16 ">
@@ -197,28 +197,26 @@ const Gallery = () => {
         </div>
         <div className="mb-12 flex flex-row items-center justify-center md:space-x-24">
           <div className="relative flex flex-row items-start justify-center space-x-16 rounded-xl bg-white p-16 drop-shadow-md dark:bg-dark">
-            <div className="relative hidden h-full flex-row space-x-12 md:flex">
-              <div className="flex flex-col space-y-2">
-                <p className="text-sm font-semibold uppercase tracking-widest text-gray">
-                  Address
-                </p>
-                <h1 className="flex w-fit items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
-                  {truncateAddr}
-                </h1>
-                {/* <p className="text-gray dark:text-light">
+            <div className="flex flex-col space-y-2">
+              <p className="text-sm font-semibold uppercase tracking-widest text-gray">
+                Address
+              </p>
+              <h1 className="flex w-fit items-center justify-center text-center text-5xl font-extrabold text-black dark:text-white">
+                {truncateAddr}
+              </h1>
+              {/* <p className="text-gray dark:text-light">
                   Owns a total of{" "}
                   <h1 className="inline font-semibold text-dark dark:text-white">
                     {NFTcount}
                   </h1>
                   Non-fungible tokens.
                 </p> */}
-              </div>
             </div>
           </div>
         </div>
         <div className="mb-12 flex w-full flex-row items-center justify-center">
           <input
-            className="border-1 w-1/2 rounded-xl border-black bg-white py-4 pr-16 pl-6 text-black placeholder-gray drop-shadow-md hover:placeholder-black focus:outline-none dark:border-white dark:bg-dark dark:text-white dark:placeholder-light dark:hover:placeholder-white"
+            className="border-1 w-full rounded-xl border-black bg-white py-4 pr-16 pl-6 text-black placeholder-gray drop-shadow-md hover:placeholder-black focus:outline-none dark:border-white dark:bg-dark dark:text-white dark:placeholder-light dark:hover:placeholder-white md:w-1/2"
             placeholder="Search NFTs by name or token ID"
             onChange={(e) => setSearch(e.target.value)}
             spellCheck={false}
