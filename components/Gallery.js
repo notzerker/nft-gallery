@@ -22,6 +22,7 @@ import { Context } from "./Context";
 import useNFTs from "../hooks/useNFTs";
 import useCollections from "../hooks/useCollections";
 import useBalance from "../hooks/useBalance";
+import Error from "./Error";
 
 const Gallery = () => {
   const [url, setUrl] = useState();
@@ -43,11 +44,15 @@ const Gallery = () => {
   const { address: urlAddress } = router.query;
 
   useEffect(() => {
-    setAddress(urlAddress);
+    if (urlAddress)
+      if (urlAddress.length === 42) {
+        if (urlAddress.startsWith("0x")) {
+          setAddress(urlAddress);
+        }
+      }
   }, [urlAddress]);
 
   const { NFTcount, initialResult } = useNFTs(address);
-  // const collections = useCollections(initialResult);
   const balance = useBalance(address);
 
   useEffect(() => {
@@ -102,7 +107,7 @@ const Gallery = () => {
 
   console.log(items);
 
-  return (
+  return address ? (
     <div className={`${dark && "dark"}`}>
       <div className="fixed top-0 h-[200vh] w-[200vw] translate-x-[-50vw] translate-y-[-100vh] bg-gradient-radial from-[#8608FD10] to-transparent"></div>
       <div
@@ -214,14 +219,18 @@ const Gallery = () => {
             </div>
           </div>
         </div>
-        <div className="mb-12 flex w-full flex-row items-center justify-center">
+        <motion.div
+          className="mb-12 flex w-full flex-row items-center justify-center"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 1 }}
+        >
           <input
             className="border-1 w-full rounded-xl border-black bg-white py-4 pr-16 pl-6 text-black placeholder-gray drop-shadow-md hover:placeholder-black focus:outline-none dark:border-white dark:bg-dark dark:text-white dark:placeholder-light dark:hover:placeholder-white md:w-1/2"
             placeholder="Search NFTs by name or token ID"
             onChange={(e) => setSearch(e.target.value)}
             spellCheck={false}
           />
-        </div>
+        </motion.div>
         <InfiniteScroll
           dataLength={items.length}
           next={fetchItems}
@@ -270,6 +279,8 @@ const Gallery = () => {
         </InfiniteScroll>
       </div>
     </div>
+  ) : (
+    <Error />
   );
 };
 

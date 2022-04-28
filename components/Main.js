@@ -35,18 +35,18 @@ const Main = () => {
           {dark ? <FiSun /> : <FiMoon />}
         </motion.a>
         <div className="flex h-full flex-col items-center justify-center">
-          <p className="text-lg uppercase tracking-widest text-white">
+          <p className="text-sm uppercase tracking-widest text-white md:text-lg">
             Welcome To
           </p>
-          <h1 className="p-4 text-center text-9xl font-extrabold tracking-tighter text-white">
+          <h1 className="p-4 text-center text-7xl font-extrabold tracking-tighter text-white md:text-9xl">
             The Gallery.
           </h1>
-          <h2 className="text-kg mt-2 text-light">
+          <h2 className="mt-2 text-base text-light md:text-lg">
             Explore other's NFT collections on the Ethereum network.
           </h2>
           <motion.div
             className="relative flex w-80 flex-col items-center justify-center"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 1 }}
           >
             <form onSubmit={(e) => formHandler(e)} className="w-full">
