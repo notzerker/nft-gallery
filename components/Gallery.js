@@ -111,7 +111,7 @@ const Gallery = () => {
     <div className={`${dark && "dark"}`}>
       <div className="fixed top-0 h-[200vh] w-[200vw] translate-x-[-50vw] translate-y-[-100vh] bg-gradient-radial from-[#8608FD10] to-transparent"></div>
       <div
-        className={`relative flex min-h-screen w-full flex-col items-center justify-start  px-8 py-40  md:px-12 lg:px-16`}
+        className={`relative flex min-h-screen w-full flex-col items-center justify-start  px-8 pt-40 pb-6 md:px-12  md:pb-8 lg:px-16`}
       >
         <Link href="/">
           <motion.a className="absolute top-8 left-8 cursor-pointer rounded-xl bg-white p-4 text-2xl text-black drop-shadow-md hover:text-black dark:bg-dark dark:text-gray dark:hover:text-white md:top-16 md:left-16 ">
